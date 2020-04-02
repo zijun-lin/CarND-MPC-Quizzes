@@ -23,7 +23,7 @@ int main() {
   /**
    * TODO: fit a polynomial to the above x and y coordinates
    */
-  auto coeffs = ? ;
+  auto coeffs = polyfit(ptsx, ptsy, 1);
 
   // NOTE: free feel to play around with these
   double x = -1;
@@ -33,14 +33,18 @@ int main() {
   /**
    * TODO: calculate the cross track error
    */
-  double cte = ? ;
+  double cte =  polyeval(coeffs, x) - y;
   /**
    * TODO: calculate the orientation error
    */
-  double epsi = ? ;
+  double epsi = psi - atan(coeffs[1]);
 
   VectorXd state(6);
   state << x, y, psi, v, cte, epsi;
+
+  cout << "coeffs: " << endl << coeffs << endl;
+  cout << "cte: " << cte << endl;
+  cout << "epsi: " << epsi << endl;
 
   vector<double> x_vals = {state[0]};
   vector<double> y_vals = {state[1]};
@@ -51,6 +55,8 @@ int main() {
   vector<double> delta_vals = {};
   vector<double> a_vals = {};
 
+
+  int idx = 1;
   for (size_t i = 0; i < iters; ++i) {
     cout << "Iteration " << i << endl;
 
@@ -78,6 +84,7 @@ int main() {
     cout << endl;
   }
 
+#if 1
   // Plot values
   // NOTE: feel free to play around with this.
   // It's useful for debugging!
@@ -92,4 +99,5 @@ int main() {
   plt::plot(v_vals);
 
   plt::show();
+#endif
 }
